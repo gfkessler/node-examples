@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple markers</title>
+    <style>
+      html, body, #map-canvas {
+        height: 100%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+
+$( document ).ready(function() {
+	
+function initialize() {
+  var myLatlng = new google.maps.LatLng(-34.5978281, -58.3859218);
+  var mapOptions = {
+    zoom: 14,
+    center: myLatlng
+  }
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+(function poll(){
+$.ajax({
+    url: 'http://localhost:3000/comments',
+    crossDomain: true,
+    type:"GET",
+    dataType: 'jsonp',
+    complete: poll, 
+    timeout: 30000,
+    success: function(data) { 
+
+	$.each( data, function( index, value ){
+    		drawMaker(value.positionLng, value.positionLat, value.comment)
+	});	
+    }
+});
+})();
+
+function drawMaker(lng, lat, comment){
+	var myLatlng = new google.maps.LatLng(lat, lng);
+	new google.maps.Marker({
+      		position: myLatlng,
+      		map: map,
+      		title: comment
+  });
+	console.log(lng + lat + comment);
+}
+
+
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+});
+
+    </script>
+  </head>
+  <body>
+    <div style="width:500px" id="map-canvas"></div>
+  </body>
+</html>
