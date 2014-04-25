@@ -6,7 +6,8 @@ var aetherSchema = new Schema({
 	comment: 	{ type: String },
 	positionLat: 	{ type: Number },
 	positionLng:  	{ type: Number },
-	date: 		{ type: Date }
+	date: 		{ type: Date },
+    image:      {type: String}
 });
 
 
